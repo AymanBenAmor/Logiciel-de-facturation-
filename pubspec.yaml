@@ -1,0 +1,36 @@
+name: achraf_app
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  arabic_font: ^0.0.9
+  csv: ^6.0.0
+  flutter:
+    sdk: flutter
+  intl: ^0.20.1
+  path_provider: ^2.1.5
+  pdf: ^3.11.1
+  printing: ^5.13.4
+  flutter_typeahead: ^5.2.0
+  
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/bg.jpg
+    - assets/logo.png
+    - assets/logo.jpg
+    - assets/fonts/DINNextLTArabic-Regular-3.ttf
+
+
