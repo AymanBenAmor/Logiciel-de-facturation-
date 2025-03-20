@@ -93,29 +93,16 @@ pw.Column generateTextColumn_string( List<String> list) {
   );
 }
 
-pw.Column generateTextColumn_remise(List<String> list) {
+pw.Column generateTextColumn_remise() {
   List<pw.Widget> texts = [];
   
   // Create 'numberOfLines' Text widgets dynamically
-  for (int i = 0; i < list.length; i++) {
-    texts.add(pw.Text(list[i]+"%", style: pw.TextStyle(fontSize: 8)));
+  for (int i = 0; i < foundReferences.length; i++) {
+    if(Remise[i] == Remise[i].floor()){
+      texts.add(pw.Text(Remise[i].toInt().toString()+"%", style: pw.TextStyle(fontSize: 8)));
     texts.add(pw.SizedBox(height: 6));
-  }
-  
-  // Return the Column containing the Text widgets
-  return pw.Column(
-    crossAxisAlignment: pw.CrossAxisAlignment.start,
-    children: texts,
-  );
-}
-
-pw.Column generateTextColumn_double( List<double> list) {
-  List<pw.Widget> texts = [];
-  
-  // Create 'numberOfLines' Text widgets dynamically
-  for (int i = 0; i < list.length; i++) {
-    if(list[i]!=0){
-      texts.add(pw.Text(list[i].toString(), style: pw.TextStyle(fontSize: 8)));
+    }else{
+      texts.add(pw.Text(Remise[i].toString()+"%", style: pw.TextStyle(fontSize: 8)));
     texts.add(pw.SizedBox(height: 6));
     }
     
@@ -127,6 +114,52 @@ pw.Column generateTextColumn_double( List<double> list) {
     children: texts,
   );
 }
+
+
+
+
+pw.Column generateTextColumn_double(List<double> list) {
+  List<pw.Widget> texts = [];
+
+  // Create 'numberOfLines' Text widgets dynamically
+  for (int i = 0; i < list.length; i++) {
+    if (list[i] != 0) {
+      texts.add(pw.Text(list[i].toStringAsFixed(3), style: pw.TextStyle(fontSize: 8)));
+
+      texts.add(pw.SizedBox(height: 6));
+    }
+  }
+
+  // Return the Column containing the Text widgets
+  return pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: texts,
+  );
+}
+
+pw.Column generateTextColumn_double_quantity(List<double> list) {
+  List<pw.Widget> texts = [];
+
+  // Create 'numberOfLines' Text widgets dynamically
+  for (int i = 0; i < list.length; i++) {
+    if (list[i] != 0) {
+      // Check if list[i] has no digits after the decimal point
+      if (list[i] == list[i].floor()) {
+        texts.add(pw.Text(list[i].toInt().toString(), style: pw.TextStyle(fontSize: 8)));
+      } else {
+        texts.add(pw.Text(list[i].toString(), style: pw.TextStyle(fontSize: 8)));
+      }
+      texts.add(pw.SizedBox(height: 6));
+    }
+  }
+
+  // Return the Column containing the Text widgets
+  return pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: texts,
+  );
+}
+
 
 pw.Column generateTextColumn(String text) {
   List<pw.Widget> texts = [];
@@ -642,7 +675,7 @@ pw.TableRow(
       height: 310,
       alignment: pw.Alignment.center,
       padding: pw.EdgeInsets.all(5),
-      child: generateTextColumn_double(quantity),
+      child: generateTextColumn_double_quantity(quantity),
 
     ),
     pw.Container(
@@ -656,7 +689,7 @@ pw.TableRow(
       height: 310,
       padding: pw.EdgeInsets.all(5),
       alignment: pw.Alignment.center,
-      child: generateTextColumn_double(Remise),
+      child: generateTextColumn_remise(),
 
     ),
  

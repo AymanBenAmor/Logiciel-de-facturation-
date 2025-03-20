@@ -98,13 +98,19 @@ pw.Column generateTextColumn_string( List<String> list) {
   );
 }
 
-pw.Column generateTextColumn_remise(List<String> list) {
+pw.Column generateTextColumn_remise() {
   List<pw.Widget> texts = [];
   
   // Create 'numberOfLines' Text widgets dynamically
-  for (int i = 0; i < list.length; i++) {
-    texts.add(pw.Text(list[i]+"%", style: pw.TextStyle(fontSize: 8)));
+  for (int i = 0; i < foundReferences.length; i++) {
+    if(Remise[i] == Remise[i].floor()){
+      texts.add(pw.Text(Remise[i].toInt().toString()+"%", style: pw.TextStyle(fontSize: 8)));
     texts.add(pw.SizedBox(height: 6));
+    }else{
+      texts.add(pw.Text(Remise[i].toString()+"%", style: pw.TextStyle(fontSize: 8)));
+    texts.add(pw.SizedBox(height: 6));
+    }
+    
   }
   
   // Return the Column containing the Text widgets
@@ -126,6 +132,29 @@ pw.Column generateTextColumn_double( List<double> list) {
     
   }
   
+  // Return the Column containing the Text widgets
+  return pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: texts,
+  );
+}
+
+pw.Column generateTextColumn_double_quantity(List<double> list) {
+  List<pw.Widget> texts = [];
+
+  // Create 'numberOfLines' Text widgets dynamically
+  for (int i = 0; i < list.length; i++) {
+    if (list[i] != 0) {
+      // Check if list[i] has no digits after the decimal point
+      if (list[i] == list[i].floor()) {
+        texts.add(pw.Text(list[i].toInt().toString(), style: pw.TextStyle(fontSize: 8)));
+      } else {
+        texts.add(pw.Text(list[i].toString(), style: pw.TextStyle(fontSize: 8)));
+      }
+      texts.add(pw.SizedBox(height: 6));
+    }
+  }
+
   // Return the Column containing the Text widgets
   return pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -472,7 +501,7 @@ Future<void> generatePdf(String clientName, String address, String mfNumber) asy
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    'Societé Achraf Mnif pour les Equipements Générales',
+                    'Societé Achraf Mnif Equipements Générales',
                     style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold),
                     overflow: pw.TextOverflow.clip,  // Ensures it wraps
                   ),
@@ -592,7 +621,7 @@ pw.TableRow(
       height: 310,
       alignment: pw.Alignment.center,
       padding: pw.EdgeInsets.all(5),
-      child: generateTextColumn_double(quantity),
+      child: generateTextColumn_double_quantity(quantity),
 
     ),
     pw.Container(
@@ -606,7 +635,7 @@ pw.TableRow(
       height: 310,
       padding: pw.EdgeInsets.all(5),
       alignment: pw.Alignment.center,
-      child: generateTextColumn_double(Remise),
+      child: generateTextColumn_remise(),
 
     ),
  
@@ -1118,8 +1147,8 @@ Navigator.pop(context);
                               child: Container(
                                  // Adjust the height of the TextField's container
                                 child: Text(
-                                    "Société Achraf Mnif pour les Equipements générales",
-                                    style: TextStyle(fontSize: 11,fontWeight: FontWeight.bold),
+                                    "Société Achraf Mnif Equipements générales",
+                                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),
                                 )
                               ),
                             ),

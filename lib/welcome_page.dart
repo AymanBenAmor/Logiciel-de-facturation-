@@ -8,6 +8,7 @@ import 'package:achraf_app/display_clients.dart';
 import 'package:achraf_app/display_products.dart';
 import 'package:achraf_app/facture.dart';
 import 'package:achraf_app/passager.dart';
+import 'package:achraf_app/update_article.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -23,6 +24,7 @@ class _WelcomePageState extends State<WelcomePage> {
   bool _isHoveredAdd = false; // Track hover state for the "+" button
   bool _isHoveredRemove = false; // Track hover state for the "-" button
   bool _isHoveredList = false;
+  bool _isHoveredUpdate = false;
 
   bool _isHoveredAdd_client = false; // Track hover state for the "+" button
   bool _isHoveredRemove_client = false; // Track hover state for the "-" button
@@ -234,6 +236,8 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
           ),
+
+         
           Positioned(
             right: 0,
             bottom: 140,
@@ -269,6 +273,45 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
 
+
+           //update article button
+          Positioned(
+            right: 0,
+            bottom: 210,
+            child: MouseRegion(
+              onEnter: (_) {
+                setState(() {
+                  _isHoveredUpdate = true; // Show the rectangle for "+" button when hovered
+                  
+                });
+              },
+              onExit: (_) {
+                setState(() {
+                  _isHoveredUpdate = false; // Hide the rectangle for "+" button when the cursor exits
+                });
+              },
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const UpdateArticlePage()),
+                  );
+                },
+                backgroundColor: const Color.fromARGB(255, 255, 89, 0), // Same color as the buttons
+                child: const Icon(Icons.settings, size: 30, color: Colors.white), // "+" symbol
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(
+                    color: Colors.white, // Border color for the button
+                    width: 2, // Border width
+                  ),
+                  borderRadius: BorderRadius.circular(30), // Rounded border for the floating action button
+                ),
+              ),
+            ),
+          ),
+
+
+
           // time
           Positioned(
             right: 16,
@@ -290,7 +333,7 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
 
-      /// right buttons
+      /// left buttons
       /// add client button 
     Positioned(
             left: 30,
@@ -447,6 +490,24 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
                 child: const Text(
                   "Afficher tous les articles", // Text inside the rectangle
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+
+             if (_isHoveredUpdate)
+            Positioned(
+              right: 60,
+              bottom: 222.5, // Adjust based on the position of the "-" button
+              child: Container(
+                width: 200, // Width of the rectangle
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 255, 89, 0), // Orange color for the rectangle
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  "Modifier un article", // Text inside the rectangle
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),

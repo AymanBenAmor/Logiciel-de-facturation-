@@ -61,6 +61,10 @@ class _BL_PageState extends State<BL_Page> {
   String adresse = '';
   String mf = '';
 
+    //logo path
+  String logo_path = 'data/flutter_assets/assets/logo.jpg';
+
+
   @override
   void initState() {
     super.initState();
@@ -159,13 +163,19 @@ pw.Column generateTextColumn_string( List<String> list) {
   );
 }
 
-pw.Column generateTextColumn_remise(List<String> list) {
+pw.Column generateTextColumn_remise() {
   List<pw.Widget> texts = [];
   
   // Create 'numberOfLines' Text widgets dynamically
-  for (int i = 0; i < list.length; i++) {
-    texts.add(pw.Text(list[i]+"%", style: pw.TextStyle(fontSize: 8)));
+  for (int i = 0; i < foundReferences.length; i++) {
+    if(Remise[i] == Remise[i].floor()){
+      texts.add(pw.Text(Remise[i].toInt().toString()+"%", style: pw.TextStyle(fontSize: 8)));
     texts.add(pw.SizedBox(height: 6));
+    }else{
+      texts.add(pw.Text(Remise[i].toString()+"%", style: pw.TextStyle(fontSize: 8)));
+    texts.add(pw.SizedBox(height: 6));
+    }
+    
   }
   
   // Return the Column containing the Text widgets
@@ -175,18 +185,41 @@ pw.Column generateTextColumn_remise(List<String> list) {
   );
 }
 
-pw.Column generateTextColumn_double( List<double> list) {
+pw.Column generateTextColumn_double(List<double> list) {
   List<pw.Widget> texts = [];
-  
+
   // Create 'numberOfLines' Text widgets dynamically
   for (int i = 0; i < list.length; i++) {
-    if(list[i]!=0){
-      texts.add(pw.Text(list[i].toString(), style: pw.TextStyle(fontSize: 8)));
-    texts.add(pw.SizedBox(height: 6));
+    if (list[i] != 0) {
+      texts.add(pw.Text(list[i].toStringAsFixed(3), style: pw.TextStyle(fontSize: 8)));
+
+      texts.add(pw.SizedBox(height: 6));
     }
-    
   }
-  
+
+  // Return the Column containing the Text widgets
+  return pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: texts,
+  );
+}
+
+pw.Column generateTextColumn_double_quantity(List<double> list) {
+  List<pw.Widget> texts = [];
+
+  // Create 'numberOfLines' Text widgets dynamically
+  for (int i = 0; i < list.length; i++) {
+    if (list[i] != 0) {
+      // Check if list[i] has no digits after the decimal point
+      if (list[i] == list[i].floor()) {
+        texts.add(pw.Text(list[i].toInt().toString(), style: pw.TextStyle(fontSize: 8)));
+      } else {
+        texts.add(pw.Text(list[i].toString(), style: pw.TextStyle(fontSize: 8)));
+      }
+      texts.add(pw.SizedBox(height: 6));
+    }
+  }
+
   // Return the Column containing the Text widgets
   return pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -496,7 +529,7 @@ Future<void> generatePdf(String clientName, String address, String mfNumber) asy
         marginBottom: 0,
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 20,
+        marginTop: 15,
       ),
       build: (context) {
        
@@ -507,79 +540,79 @@ Future<void> generatePdf(String clientName, String address, String mfNumber) asy
             // Company Info and Logo Section
 pw.Row(
   mainAxisAlignment: pw.MainAxisAlignment.center,
-  
   children: [
     // Logo Container
     pw.Container(
-      
       height: 120,
       width: 120,
       child: pw.Image(
         pw.MemoryImage(
-          File('data/flutter_assets/assets/logo.jpg').readAsBytesSync(), // Replace with your logo
+          File(logo_path).readAsBytesSync(), // Replace with your logo
         ),
         fit: pw.BoxFit.cover,
       ),
     ),
-    pw.SizedBox(width: 20),
+    pw.SizedBox(width: 60),
     // Company Info Container
-    pw.Align(
-       // Optional padding for better spacing
-        // Adjust the width as needed
+    pw.Container(
+      // Constrain the width for proper text wrapping
+      width: 350,
       child: pw.Column(
-        
-        crossAxisAlignment: pw.CrossAxisAlignment.center, 
-        mainAxisSize:pw.MainAxisSize.min, // Center text within the column
+        crossAxisAlignment: pw.CrossAxisAlignment.center,
+        mainAxisSize: pw.MainAxisSize.min,
         children: [
-          
-          
-         pw.Text(
-            " SAMEG",
+          pw.Text(
+            "MNIFEG",
             style: pw.TextStyle(
-              fontSize: 60,
+              fontSize: 55,
               fontWeight: pw.FontWeight.bold,
-              letterSpacing: 30,
-              
+              letterSpacing: 25,
             ),
           ),
           pw.Text(
-            "Societé Achraf Mnif pour les Equipements Générales",
+            "Societé Achraf Mnif Equipements Générales",
             style: pw.TextStyle(
-              fontSize: 15,
+              fontSize: 13,
               fontWeight: pw.FontWeight.bold,
               wordSpacing: 2.5,
-              
             ),
           ),
           pw.SizedBox(height: 5),
+          // Address Text with Wrapping
           pw.Text(
-            "Adresse : Route de EL Ain Km 4. SFAX/TUNISIE",
+            "ADRESSE: AV LIBERTE IMM BECHR 2 SFAX, Sfax Magreb \nArabe, Sfax Médina, Sfax, 3049",
             style: pw.TextStyle(
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: pw.FontWeight.bold,
               height: 2,
             ),
+            textAlign: pw.TextAlign.center,
           ),
-          pw.SizedBox(height: 5),
-
+          pw.SizedBox(height: 3),
+          // Email Text
           pw.Text(
-            "MF: 3880G/AM/000 RC: B 1128271997",
+            "E-mail: contact.sameg@gmail.com",
             style: pw.TextStyle(
               fontSize: 11,
               fontWeight: pw.FontWeight.bold,
             ),
           ),
-          pw.SizedBox(height: 5),
-
           pw.Text(
-            "E-mail: mnifachraf7@gmail.com",
+            "Vente Gros Produits Divers",
             style: pw.TextStyle(
               fontSize: 11,
               fontWeight: pw.FontWeight.bold,
             ),
           ),
-          pw.SizedBox(height: 5),
+          pw.Text(
+            "MF: 1901987A/AM/000",
+            style: pw.TextStyle(
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
           
+          // Phone Text
           pw.Text(
             "Tél: +216 22 922 811",
             style: pw.TextStyle(
@@ -590,13 +623,13 @@ pw.Row(
         ],
       ),
     ),
-    
   ],
 ),
 
 
+
            
-            pw.SizedBox(height: 20),
+            pw.SizedBox(height: 15),
              pw.Text(
       "BON DE LIVRAISON",
       style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
@@ -631,7 +664,7 @@ pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               pw.Text(
-                "F $numero_BL/${DateTime.now().year.toString().substring(2)}", // Extract the last 2 digits of the current year
+                "BL SF $numero_BL/${DateTime.now().year.toString().substring(2)}", // Extract the last 2 digits of the current year
                 textAlign: pw.TextAlign.center,
               ),
               pw.Text(
@@ -823,7 +856,7 @@ pw.TableRow(
       height: 310,
       alignment: pw.Alignment.center,
       padding: pw.EdgeInsets.all(5),
-      child: generateTextColumn_double(quantity),
+      child: generateTextColumn_double_quantity(quantity),
 
     ),
     pw.Container(
@@ -837,7 +870,7 @@ pw.TableRow(
       height: 310,
       padding: pw.EdgeInsets.all(5),
       alignment: pw.Alignment.center,
-      child: generateTextColumn_double(Remise),
+      child: generateTextColumn_remise(),
 
     ),
     
@@ -1146,15 +1179,30 @@ pw.Row(
 
 // Populate the rows with data
 for (int i = 0; i < foundReferences.length; i++) {
-  rows.add([
+  if(quantity[i] == quantity[i].floor()){
+
+    rows.add([
+    foundReferences[i], // First column
+    Designation[i],     // Second column
+    quantity[i].toInt(),        // Third column
+    PU[i],
+    Remise[i],
+    "19",   
+    montant[i].toStringAsFixed(3),           // Fourth column
+  ]);
+
+  }else{
+    rows.add([
     foundReferences[i], // First column
     Designation[i],     // Second column
     quantity[i],        // Third column
     PU[i],
     Remise[i],
     "19",   
-    montant[i],           // Fourth column
+    montant[i].toStringAsFixed(3),           // Fourth column
   ]);
+  }
+  
 }
   addClientCsv(csvClientPath,rows);
   // Print the saved PDF
@@ -1181,6 +1229,8 @@ Navigator.pop(context);
             onPressed:() async{
               // Generate and save the PDF
               generatePdf(clientName, adresse, mf);
+              
+
             }
           ),
         ],
@@ -1200,83 +1250,98 @@ Navigator.pop(context);
             children: [
               // Row to align logo and company details
               Row(
-                children: [
-                  // Load and display logo from assets
-                  Image.asset(
-                    'assets/logo.jpg', // Replace with the actual path to your logo image
-                    width: 120, // Adjust logo size
-                    height: 120,
-                  ),
-                  SizedBox(width: 34),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color.fromARGB(0, 0, 0, 0),
-                            width: 1),
-                      ),
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "SAMEG",
-                            style: TextStyle(
-                              fontSize: 70,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 32,
-                              height: 0.8,
-                            ),
-                          ),
-                          
-                          Text(
-                            "Societé Achraf Mnif pour les Equipements Générales",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              wordSpacing: 4,
-                            ),
-                          ),
-                          Text(
-                            "Adresse: Route de EL Ain Km4. SFAX/TUNISIE",
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              height: 2,
-                            ),
-                          ),
-                          Text(
-                            "MF: 3880G/AM/000 RC: B 1128271997",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          
-                          
-                          Text(
-                            "E-mail: mnifachraf7@gmail.com",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            "Tél: +216 22 922 811",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+  children: [
+    // Load and display logo from assets
+    Image.asset(
+      'assets/logo.jpg', // Replace with the actual path to your logo image
+      width: 120, // Adjust logo size
+      height: 120,
+    ),
+    SizedBox(width: 15),
+    Expanded(
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color.fromARGB(0, 0, 0, 0),
+              width: 1,
+            ),
+          ),
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "MNIFEG",
+                style: TextStyle(
+                  fontSize: 65,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 25,
+                  height: 0.8,
+                ),
               ),
-              SizedBox(height: 20),
+              Text(
+                "Societé Achraf Mnif Equipements Générales",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  wordSpacing: 4,
+                ),
+              ),
+              
+              SizedBox(height: 3,),
+              Text(
+                "ADRESSE: AV LIBERTE IMM BECHR 2 SFAX, Sfax Magreb \nArabe, Sfax Médina, Sfax, 3049",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center, // Center-align the text
+                softWrap: true, // Enable wrapping
+                overflow: TextOverflow.visible, // Ensure overflow is handled
+              ),
+              
+              Text(
+                "E-mail: contact.sameg@gmail.com",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Vente Gros Produits Divers",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  wordSpacing: 4,
+                ),
+              ),
+              Text(
+                "MF: 1901987A/AM/000",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Tél: +216 22 922 811",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+
+              SizedBox(height: 15),
 
               // Add a new Row below this one with the table and the rectangular box
               Row(
@@ -1715,6 +1780,9 @@ Container(
                   Remise[index] = value; // Update the quantity in the list
                 });
               } else {
+                setState(() {
+                  Remise[index] = 0; // Update the quantity in the list
+                });
                 // Show a warning for invalid input
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('Remise invalide.'),

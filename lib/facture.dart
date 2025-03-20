@@ -59,6 +59,10 @@ class _FacturePageState extends State<FacturePage> {
   String adresse = '';
   String mf = '';
 
+
+  //logo path
+  String logo_path = 'data/flutter_assets/assets/logo.jpg';
+
   @override
   void initState() {
     super.initState();
@@ -495,79 +499,79 @@ Future<void> generatePdf(String clientName, String address, String mfNumber) asy
             // Company Info and Logo Section
 pw.Row(
   mainAxisAlignment: pw.MainAxisAlignment.center,
-  
   children: [
     // Logo Container
     pw.Container(
-      
       height: 120,
       width: 120,
       child: pw.Image(
         pw.MemoryImage(
-          File('data/flutter_assets/assets/logo.jpg').readAsBytesSync(), // Replace with your logo
+          File(logo_path).readAsBytesSync(), // Replace with your logo
         ),
         fit: pw.BoxFit.cover,
       ),
     ),
-    pw.SizedBox(width: 20),
+    pw.SizedBox(width: 60),
     // Company Info Container
-    pw.Align(
-       // Optional padding for better spacing
-        // Adjust the width as needed
+    pw.Container(
+      // Constrain the width for proper text wrapping
+      width: 350,
       child: pw.Column(
-        
-        crossAxisAlignment: pw.CrossAxisAlignment.center, 
-        mainAxisSize:pw.MainAxisSize.min, // Center text within the column
+        crossAxisAlignment: pw.CrossAxisAlignment.center,
+        mainAxisSize: pw.MainAxisSize.min,
         children: [
-          
-          
           pw.Text(
-            " SAMEG",
+            "MNIFEG",
             style: pw.TextStyle(
-              fontSize: 60,
+              fontSize: 55,
               fontWeight: pw.FontWeight.bold,
-              letterSpacing: 30,
-              
+              letterSpacing: 25,
             ),
           ),
           pw.Text(
-            "Societé Achraf Mnif pour les Equipements Générales",
+            "Societé Achraf Mnif Equipements Générales",
             style: pw.TextStyle(
-              fontSize: 15,
+              fontSize: 13,
               fontWeight: pw.FontWeight.bold,
               wordSpacing: 2.5,
-              
             ),
           ),
           pw.SizedBox(height: 5),
+          // Address Text with Wrapping
           pw.Text(
-            "Adresse : Route de EL Ain Km 4. SFAX/TUNISIE",
+            "ADRESSE: AV LIBERTE IMM BECHR 2 SFAX, Sfax Magreb \nArabe, Sfax Médina, Sfax, 3049",
             style: pw.TextStyle(
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: pw.FontWeight.bold,
               height: 2,
             ),
+            textAlign: pw.TextAlign.center,
           ),
-          pw.SizedBox(height: 5),
-
+          pw.SizedBox(height: 3),
+          // Email Text
           pw.Text(
-            "MF: 3880G/AM/000 RC: B 1128271997",
+            "E-mail: contact.sameg@gmail.com",
             style: pw.TextStyle(
               fontSize: 11,
               fontWeight: pw.FontWeight.bold,
             ),
           ),
-          pw.SizedBox(height: 5),
-
           pw.Text(
-            "E-mail: mnifachraf7@gmail.com",
+            "Vente Gros Produits Divers",
             style: pw.TextStyle(
               fontSize: 11,
               fontWeight: pw.FontWeight.bold,
             ),
           ),
-          pw.SizedBox(height: 5),
+          pw.Text(
+            "MF: 1901987A/AM/000",
+            style: pw.TextStyle(
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
           
+          // Phone Text
           pw.Text(
             "Tél: +216 22 922 811",
             style: pw.TextStyle(
@@ -578,7 +582,6 @@ pw.Row(
         ],
       ),
     ),
-    
   ],
 ),
 
@@ -1203,83 +1206,98 @@ Navigator.pop(context);
             children: [
               // Row to align logo and company details
               Row(
-                children: [
-                  // Load and display logo from assets
-                  Image.asset(
-                    'assets/logo.jpg', // Replace with the actual path to your logo image
-                    width: 120, // Adjust logo size
-                    height: 120,
-                  ),
-                  SizedBox(width: 34),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color.fromARGB(0, 0, 0, 0),
-                            width: 1),
-                      ),
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "SAMEG",
-                            style: TextStyle(
-                              fontSize: 70,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 32,
-                              height: 0.8,
-                            ),
-                          ),
-                          
-                          Text(
-                            "Societé Achraf Mnif pour les Equipements Générales",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              wordSpacing: 4,
-                            ),
-                          ),
-                          Text(
-                            "Adresse: Route de EL Ain Km4. SFAX/TUNISIE",
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              height: 2,
-                            ),
-                          ),
-                          Text(
-                            "MF: 3880G/AM/000 RC: B 1128271997",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          
-                          
-                          Text(
-                            "E-mail: mnifachraf7@gmail.com",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            "Tél: +216 22 922 811",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+  children: [
+    // Load and display logo from assets
+    Image.asset(
+      'assets/logo.jpg', // Replace with the actual path to your logo image
+      width: 120, // Adjust logo size
+      height: 120,
+    ),
+    SizedBox(width: 10),
+    Expanded(
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color.fromARGB(0, 0, 0, 0),
+              width: 1,
+            ),
+          ),
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "MNIFEG",
+                style: TextStyle(
+                  fontSize: 65,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 25,
+                  height: 0.8,
+                ),
               ),
-              SizedBox(height: 20),
+              Text(
+                "Societé Achraf Mnif Equipements Générales",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  wordSpacing: 4,
+                ),
+              ),
+              
+              SizedBox(height: 3,),
+              Text(
+                "ADRESSE: AV LIBERTE IMM BECHR 2 SFAX, Sfax Magreb \nArabe, Sfax Médina, Sfax, 3049",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center, // Center-align the text
+                softWrap: true, // Enable wrapping
+                overflow: TextOverflow.visible, // Ensure overflow is handled
+              ),
+              
+              Text(
+                "E-mail: contact.sameg@gmail.com",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Vente Gros Produits Divers",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  wordSpacing: 4,
+                ),
+              ),
+              Text(
+                "MF: 1901987A/AM/000",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Tél: +216 22 922 811",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+
+              SizedBox(height: 15),
 
               // Add a new Row below this one with the table and the rectangular box
               Row(
