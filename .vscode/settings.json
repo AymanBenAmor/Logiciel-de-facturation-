@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/projects/Logiciel_achrafMnif/achraf_app/linux"
+    "cmake.sourceDirectory": "D:/projects/Logiciel_achrafMnif/achraf_app/linux",
+    "idf.pythonInstallPath": "F:\\programs\\Espressif\\tools\\idf-python\\3.11.2\\python.exe"
 }

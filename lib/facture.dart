@@ -63,6 +63,8 @@ class _FacturePageState extends State<FacturePage> {
   //logo path
   String logo_path = 'data/flutter_assets/assets/logo.jpg';
 
+  // String logo_path = 'assets/logo.jpg'; // debug mode
+
   @override
   void initState() {
     super.initState();
@@ -78,6 +80,38 @@ class _FacturePageState extends State<FacturePage> {
     _mfController.dispose();
     super.dispose();
   }
+
+    bool _isGenerating = false; // Add this flag
+
+  Future<void> _handleGeneratePdf() async {
+    // 🔒 Lock immediately (before UI rebuild)
+    if (_isGenerating) return;
+    _isGenerating = true; // local assignment first (no setState yet)
+
+    setState(() {}); // just to refresh the icon
+
+    try {
+      await generatePdf(clientName, adresse, mf);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('PDF generated successfully!'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error generating PDF: $e')),
+        );
+      }
+    } finally {
+      _isGenerating = false;
+      if (mounted) setState(() {}); // re-enable the button
+    }
+  }
+
 
   Future<void> getFacture() async {
     // Get the file path of the CSV
@@ -395,7 +429,7 @@ Future<void> deleteCsvFile(String filePath) async {
 
   // Method to load the logo image from assets
   Future<void> _loadLogoImage() async {
-    final byteData = await rootBundle.load('assets/logo.png'); // Replace with your logo path
+    final byteData = await rootBundle.load('assets/logo.jpg'); // Replace with your logo path
     setState(() {
       logoImage = byteData.buffer.asUint8List();
     });
@@ -1153,7 +1187,7 @@ Navigator.pop(context);
 }
 
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEDEDED),
@@ -1162,32 +1196,20 @@ Navigator.pop(context);
         backgroundColor: const Color.fromARGB(255, 255, 89, 0),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
-            onPressed:() async{
-              // Generate and save the PDF
-              
-              generatePdf(clientName, adresse, mf);
-              
-
-              while(foundReferences.length > 20){
-                get_numero_fact();
-
-                setState(() {
-                  numero_facture += 1;
-                  foundReferences =  foundReferences.sublist(20);
-                Designation = Designation.sublist(20);
-                quantity = quantity.sublist(20);
-                PU = PU.sublist(20);
-                Remise = Remise.sublist(20);
-                TVA_list = TVA_list.sublist(20);
-                montant = montant.sublist(20);
-                });
-                generatePdf(clientName, adresse, mf);
-                
-              }
-
-              
-            }
+            icon: _isGenerating
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : const Icon(Icons.save),
+            onPressed: _isGenerating ? null : _handleGeneratePdf,
           ),
         ],
       ),

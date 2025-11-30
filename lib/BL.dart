@@ -63,6 +63,10 @@ class _BL_PageState extends State<BL_Page> {
 
     //logo path
   String logo_path = 'data/flutter_assets/assets/logo.jpg';
+  // String logo_path = 'assets/logo.jpg'; // debug mode
+
+
+  
 
 
   @override
@@ -79,6 +83,37 @@ class _BL_PageState extends State<BL_Page> {
     _adresseController.dispose();
     _mfController.dispose();
     super.dispose();
+  }
+
+  bool _isGenerating = false; // Add this flag
+
+  Future<void> _handleGeneratePdf() async {
+    // 🔒 Lock immediately (before UI rebuild)
+    if (_isGenerating) return;
+    _isGenerating = true; // local assignment first (no setState yet)
+
+    setState(() {}); // just to refresh the icon
+
+    try {
+      await generatePdf(clientName, adresse, mf);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('PDF generated successfully!'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error generating PDF: $e')),
+        );
+      }
+    } finally {
+      _isGenerating = false;
+      if (mounted) setState(() {}); // re-enable the button
+    }
   }
 
 
@@ -408,7 +443,7 @@ String convertirEnTexteTnd(double montant) {
 
   // Method to load the logo image from assets
   Future<void> _loadLogoImage() async {
-    final byteData = await rootBundle.load('assets/logo.png'); // Replace with your logo path
+    final byteData = await rootBundle.load('assets/logo.jpg'); // Replace with your logo path
     setState(() {
       logoImage = byteData.buffer.asUint8List();
     });
@@ -1216,7 +1251,7 @@ Navigator.pop(context);
 }
 
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEDEDED),
@@ -1225,15 +1260,23 @@ Navigator.pop(context);
         backgroundColor: const Color.fromARGB(255, 255, 89, 0),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
-            onPressed:() async{
-              // Generate and save the PDF
-              generatePdf(clientName, adresse, mf);
-              
-
-            }
+            icon: _isGenerating
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : const Icon(Icons.save),
+            onPressed: _isGenerating ? null : _handleGeneratePdf,
           ),
         ],
+
       ),
       body: SingleChildScrollView(
         child: Center(

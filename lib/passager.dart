@@ -349,7 +349,7 @@ String convertirEnTexteTnd(double montant) {
 
   // Method to load the logo image from assets
   Future<void> _loadLogoImage() async {
-    final byteData = await rootBundle.load('assets/logo.png'); // Replace with your logo path
+    final byteData = await rootBundle.load('assets/logo.jpg'); // Replace with your logo path
     setState(() {
       logoImage = byteData.buffer.asUint8List();
     });
