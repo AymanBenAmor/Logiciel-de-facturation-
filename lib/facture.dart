@@ -61,9 +61,9 @@ class _FacturePageState extends State<FacturePage> {
 
 
   //logo path
-  String logo_path = 'data/flutter_assets/assets/logo.jpg';
+  // String logo_path = 'data/flutter_assets/assets/logo.jpg';
 
-  // String logo_path = 'assets/logo.jpg'; // debug mode
+  String logo_path = 'assets/logo.jpg'; // debug mode
 
   @override
   void initState() {
