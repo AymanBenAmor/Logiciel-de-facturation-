@@ -550,7 +550,7 @@ pw.Row(
           pw.SizedBox(height: 3),
           // Email Text
           pw.Text(
-            "E-mail: contact.sameg@gmail.com",
+            "E-mail: contact.mnifeg@gmail.com",
             style: pw.TextStyle(
               fontSize: 11,
               fontWeight: pw.FontWeight.bold,
@@ -564,7 +564,7 @@ pw.Row(
             ),
           ),
           pw.Text(
-            "MF: 1901987A/AM/000",
+            "MF: 1901987A/AM/000\tN°RNE: 1901987A",
             style: pw.TextStyle(
               fontSize: 11,
               fontWeight: pw.FontWeight.bold,
@@ -1261,7 +1261,7 @@ Navigator.pop(context);
               ),
               
               Text(
-                "E-mail: contact.sameg@gmail.com",
+                "E-mail: contact.mnifeg@gmail.com",
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
@@ -1276,7 +1276,7 @@ Navigator.pop(context);
                 ),
               ),
               Text(
-                "MF: 1901987A/AM/000",
+                "MF: 1901987A/AM/000\tN°RNE: 1901987A",
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,

@@ -29,7 +29,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/bg.jpg
-    - assets/logo.png
     - assets/logo.jpg
     - assets/fonts/DINNextLTArabic-Regular-3.ttf
 
